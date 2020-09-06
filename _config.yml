@@ -1,7 +1,7 @@
 # Site settings
 title: CS Blog
 SEOTitle: Shu的博客 | Shu's Blog
-header-img: img/post-bg-desk.jpg
+header-img: img/WechatIMG45.jpeg
 email: uhsgnehc@163.com
 description: "Every failure is leading towards success."
 keyword: "shu, SHU Blog, 程姝的博客, chengshu, 程姝" #iOS, Apple, iPhone"
@@ -12,7 +12,7 @@ github_repo: "https://github.com/gnehC-uhS/gnehC-uhS.github.io" # you code repos
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "知行合一"
-sidebar-avatar: /img/about-BY-gentle.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/Untitled_Artwork.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
