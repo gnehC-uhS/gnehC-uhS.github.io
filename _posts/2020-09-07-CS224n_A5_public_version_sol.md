@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      CS224n_A5_public_version_sol
+title:      CS224n_A5_2020v_sol
 subtitle:   CS224n_作业5_2020版答案
 date:       2020-09-07
 author:     SC
