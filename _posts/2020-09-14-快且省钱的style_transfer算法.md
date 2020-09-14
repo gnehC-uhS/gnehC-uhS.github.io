@@ -1,3 +1,15 @@
+---
+layout:     post
+title:      快且省钱的style_transfer算法
+subtitle:   Simple and fast Style Transfer Algorithm
+date:       2020-09-14
+author:     SC
+header-img: img/post-bg-universe.jpg
+catalog: true
+tags:
+    - Vision
+---
+
 ## What is Style Transfer
 
 Style Transfer, 风格转移，即把图片A变成图片B的风格，但保持图片A的内容不变，举个栗子，假设下图左是你自己的作品，中图是梵高的星空，右图则是风格转移算法的结果。
