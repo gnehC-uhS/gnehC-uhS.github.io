@@ -28,18 +28,18 @@ Style Transfer, 风格转移，即把图片A变成图片B的风格，但保持�
 ### Flow
 1. 将input图片feed进一个pre-trained image architecture, like VGG or ResNet.
 2. 计算**Loss**：
-	1）Content：把content image的content layer, <img src="https://render.githubusercontent.com/render/math?math=F^{l} \in \mathcal{R}^{m ,n}">提取出来，将content layer变平成一个向量<img src="https://render.githubusercontent.com/render/math?math=\mathbf{f}^{l} \in \mathcal{R}^{m*n,1}">；将生成的图片<img src="https://render.githubusercontent.com/render/math?math=P^{l} \in \mathcal{R}^{m ,n}">也做同样的变平处理成一个向量<img src="https://render.githubusercontent.com/render/math?math=$\mathbf{p}^{l} \in \mathcal{R}^{m*n,1}">，那么content loss就是<img src="https://render.githubusercontent.com/render/math?math=\mathbf{f}^{l}">和<img src="https://render.githubusercontent.com/render/math?math=\mathbf{p}^{l}">的Euclidean Norm：
+	1）Content：把content image的content layer, <img src="https://render.githubusercontent.com/render/math?math=F^{l} \in \mathcal{R}^{m ,n}">提取出来，将content layer变平成一个向量<img src="https://render.githubusercontent.com/render/math?math=\mathbf{f}^{l} \in \mathcal{R}^{m*n,1}">；将生成的图片<img src="https://render.githubusercontent.com/render/math?math=P^{l} \in \mathcal{R}^{m ,n}">也做同样的变平处理成一个向量<img src="https://render.githubusercontent.com/render/math?math=$\mathbf{p}^{l} \in \mathcal{R}^{m*n,1}">，那么content loss就是f和p这两个向量的Euclidean Norm：
 	
 	<img src="https://render.githubusercontent.com/render/math?math=L_{content}(\mathbf{p},\mathbf{f},l)=\frac{1}{2}\sum_{i,j}(F_{i,j}^l-P_{i,j}^l)^2">
 	
 	2）Style Loss：两个向量的点乘可以表现这两个向量有多相似（即同方向），当我们把两个flattened feature vector点乘时，这个乘积也代表了某个feature vector在某个方向上是否相似，需要注意的是，由于图形这个张量被flatten成一个向量，故点乘并不能展示spatial信息，而只能描述更加细微的texture。
 	
-	$L_{style}=G^l_{i,j}=\sum_k F^l_{i,k}F^l_{j,k}$
+	<img src="https://render.githubusercontent.com/render/math?math=L_{style}=G^l_{i,j}=\sum_k F^l_{i,k}F^l_{j,k}">
 	其中G代表Gram matrix，即两个向量的outer product组成的矩阵
 	
-	3）A somewhat intuitive explaination w.r.t. why use difference in content loss and dot product in style loss：The content feature extracted from VGG is like greyscaled sketches of the content image. 即$F_{content}$可以想象成黑白的勾勒content的线条，所以当我们想比较生成的图片是否具备$F_{content}$所代表的content，我们只需要检查某个pixel上，是否存在一个相似的pixel的值。而style的话是一种local texture，可以想象在一副油画中，笔刷刷出来的质感，或者像梵高的星空这幅画，你会看到大面积的螺旋状的gradient，所以比起是否或高或低的像素值，我更在意这些像素它们变化的方向是否和style image一致，而这种方向可以很好的被dot product给capture。
+	3）A somewhat intuitive explaination w.r.t. why use difference in content loss and dot product in style loss：The content feature extracted from VGG is like greyscaled sketches of the content image. 即F_{content}可以想象成黑白的勾勒content的线条，所以当我们想比较生成的图片是否具备F_{content}所代表的content，我们只需要检查某个pixel上，是否存在一个相似的pixel的值。而style的话是一种local texture，可以想象在一副油画中，笔刷刷出来的质感，或者像梵高的星空这幅画，你会看到大面积的螺旋状的gradient，所以比起是否或高或低的像素值，我更在意这些像素它们变化的方向是否和style image一致，而这种方向可以很好的被dot product给capture。
 	
-3. 计算**Gradients w.r.t. input image pixels $P$**。注意这个gradients不会被back propagate到VGG的weights上，而是back propagate给input图片，VGG的weights全程保持不变。
+3. 计算**Gradients w.r.t. input image pixels P**。注意这个gradients不会被back propagate到VGG的weights上，而是back propagate给input图片，VGG的weights全程保持不变。
 
 ### Implementation
 首先我们load content image and style image，注意这里用的VGG，VGG的input是224X224，所以需要把它们都裁成224X224。
