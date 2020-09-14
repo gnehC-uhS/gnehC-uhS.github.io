@@ -28,9 +28,9 @@ Style Transfer, 风格转移，即把图片A变成图片B的风格，但保持�
 ### Flow
 1. 将input图片feed进一个pre-trained image architecture, like VGG or ResNet.
 2. 计算**Loss**：
-	1）Content：把content image的content layer, $F^{l} \in \mathcal{R}^{m ,n}$提取出来，将content layer变平成一个向量$\mathbf{f}^{l} \in \mathcal{R}^{m*n,1}$；将生成的图片$P^{l} \in \mathcal{R}^{m ,n}$也做同样的变平处理成一个向量$\mathbf{p}^{l} \in \mathcal{R}^{m*n,1}$，那么content loss就是$\mathbf{f}^{l}$和$\mathbf{p}^{l}$的Euclidean Norm：
+	1）Content：把content image的content layer, <img src="https://render.githubusercontent.com/render/math?math=F^{l} \in \mathcal{R}^{m ,n}">提取出来，将content layer变平成一个向量<img src="https://render.githubusercontent.com/render/math?math=\mathbf{f}^{l} \in \mathcal{R}^{m*n,1}">；将生成的图片<img src="https://render.githubusercontent.com/render/math?math=P^{l} \in \mathcal{R}^{m ,n}">也做同样的变平处理成一个向量<img src="https://render.githubusercontent.com/render/math?math=$\mathbf{p}^{l} \in \mathcal{R}^{m*n,1}">，那么content loss就是<img src="https://render.githubusercontent.com/render/math?math=\mathbf{f}^{l}">和<img src="https://render.githubusercontent.com/render/math?math=\mathbf{p}^{l}">的Euclidean Norm：
 	
-	$L_{content}(\mathbf{p},\mathbf{f},l)=\frac{1}{2}\sum_{i,j}(F_{i,j}^l-P_{i,j}^l)^2$
+	<img src="https://render.githubusercontent.com/render/math?math=L_{content}(\mathbf{p},\mathbf{f},l)=\frac{1}{2}\sum_{i,j}(F_{i,j}^l-P_{i,j}^l)^2">
 	
 	2）Style Loss：两个向量的点乘可以表现这两个向量有多相似（即同方向），当我们把两个flattened feature vector点乘时，这个乘积也代表了某个feature vector在某个方向上是否相似，需要注意的是，由于图形这个张量被flatten成一个向量，故点乘并不能展示spatial信息，而只能描述更加细微的texture。
 	
