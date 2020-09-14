@@ -28,6 +28,7 @@ Style Transfer, 风格转移，即把图片A变成图片B的风格，但保持�
 ### Flow
 1. 将input图片feed进一个pre-trained image architecture, like VGG or ResNet.
 2. 计算**Loss**：
+
 	1）Content：把content image的content layer, <img src="https://render.githubusercontent.com/render/math?math=F^{l} \in \mathcal{R}^{m ,n}">提取出来，将content layer变平成一个向量<img src="https://render.githubusercontent.com/render/math?math=\mathbf{f}^{l} \in \mathcal{R}^{m*n,1}">；将生成的图片<img src="https://render.githubusercontent.com/render/math?math=P^{l} \in \mathcal{R}^{m ,n}">也做同样的变平处理成一个向量<img src="https://render.githubusercontent.com/render/math?math=$\mathbf{p}^{l} \in \mathcal{R}^{m*n,1}">，那么content loss就是f和p这两个向量的Euclidean Norm：
 	
 	<img src="https://render.githubusercontent.com/render/math?math=L_{content}(\mathbf{p},\mathbf{f},l)=\frac{1}{2}\sum_{i,j}(F_{i,j}^l-P_{i,j}^l)^2">
@@ -178,6 +179,9 @@ def style_content_loss(outputs):
 ```
 到这里就是全部的setup了，后续就是一个tf.session开始训练，感兴趣的可以去链接2继续看看，这里就不继续copy&paste了（不然都没办法tag成原创了hhh），所以就到此为止了，感谢阅读。
 
+
 参考：
+
 https://arxiv.org/abs/1508.06576
+
 https://www.tensorflow.org/tutorials/generative/style_transfer
