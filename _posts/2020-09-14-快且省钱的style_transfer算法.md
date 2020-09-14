@@ -46,6 +46,7 @@ Style Transfer, 风格转移，即把图片A变成图片B的风格，但保持�
 首先我们load content image and style image，注意这里用的VGG，VGG的input是224X224，所以需要把它们都裁成224X224。
 ```python
 content_image = content #load your content image here
+
 style_image = style #load your style image here
 ```
 
