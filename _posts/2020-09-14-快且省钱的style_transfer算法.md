@@ -95,8 +95,12 @@ num_style_layers = len(style_layers)
 def vgg_layers(layer_names):
 	"""creates a vgg model that returns a list of intermediate output values"""
 	vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet')
-	vgg.trainable = False #锁住VGG的参数不变，因为我们想训练的不是参数，而是input
-	outputs = [vgg.get_layer(name).output for layer in layer_names] #vgg.get_layer(name).output 是一个tensor placeholder，下面vgg.input同理，因为VGG19的input必须是224X224，所以vgg.input也是这个size的tensor placeholder
+	#锁住VGG的参数不变，因为我们想训练的不是参数，而是input
+	
+	vgg.trainable = False 
+	#vgg.get_layer(name).output 是一个tensor placeholder，下面vgg.input同理，因为VGG19的input必须是224X224，所以vgg.input也是这个size的tensor placeholder
+	
+	outputs = [vgg.get_layer(name).output for layer in layer_names] 
 	model = tf.keras.Model([vgg.input],outputs)
 	return model
 style_extractor = vgg_layers(style_layers)
@@ -104,14 +108,16 @@ style_outputs = style_extractor(style_image*255)
 ```
 利用Gram matrix计算style loss的function，这个就是前文提到的feature vector的dot product。我们选取了5个CNN block的第一层CNN作为style feature vector，计算这些feature vector和其它feature vectors（包括它们自己）的dot product，并组成一个(num_of_feature_vector *num_of_feature_vector)的矩阵，这个过程可以用gram_matrix来实现：
 
-$G^l_{cd}=\frac{\sum_{ij}F^l_{ijc}(x)F^l_{ijd}(x)}{IJ}$
+<img src="https://render.githubusercontent.com/render/math?math=G^l_{cd}=\frac{\sum_{ij}F^l_{ijc}(x)F^l_{ijd}(x)}{IJ}">
 
 ```python
 def gram_matrix(input_tensor):
 	#(b,i,j,c)=(batch_size, ith row, jth col, cth color channel)
+	
 	result = tf.linalg.einsum('bijc,bijd->bcd', input_tensor, input_tensor)
 	input_shape = tf.shape(input_tensor)
 	# 第一个dim[0]是batch_size，所以IJ=dim[1]*dim[2]
+	
 	num_locations = tf.cast(input_shape[1]*input_shape[2],tf.float32)
 	return result/num_locations
 ```
@@ -151,6 +157,7 @@ content_targets = extractor(content_image)['content']
 image = tf.Variable(content_image)
 
 #输入进模型的数据都*255了，所以这里还原成[0,1]
+
 def clip_0_1(image):
 	return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=1.0)
 
@@ -158,6 +165,7 @@ def clip_0_1(image):
 opt = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
 # 定义style和content的loss在总loss各占多少比重
+
 style_weight, content_weight=1e-2, 1e4
 def style_content_loss(outputs):
 	style_outputs = outputs['style']
